@@ -5,7 +5,7 @@
 | | |
 | --- | --- |
 | App | https://marketpilot-blue.vercel.app |
-| Repo | https://github.com/menna-tech1/marketpilot-crm (private, `main`) |
+| Repo | https://github.com/menna-tech1/marketpilot-crm (public, `main`) |
 | Vercel project | `marketpilot` |
 | Supabase project | `daugbsfwfylxrponkzpw` (eu-central-1) |
 | Migrations | applied — 6 tables, RLS on all, 18 policies, private `documents` bucket |

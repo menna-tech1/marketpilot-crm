@@ -81,7 +81,7 @@ x-webhook-secret: <N8N_WEBHOOK_SECRET>
 
 ## Deploy (GitHub → Vercel)
 
-1. Repo is published: **https://github.com/menna-tech1/marketpilot-crm** (private, `main`).
+1. Repo is published: **https://github.com/menna-tech1/marketpilot-crm** (public, `main`).
 2. Import that repo in Vercel (framework auto-detected).
 3. Add environment variables for **Production** and **Preview**:
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
