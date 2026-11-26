@@ -1,16 +1,15 @@
 "use client";
 
-import { useActionState } from "react";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { loginAction, signUpAction, type AuthState } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Field, Input } from "@/components/ui/field";
 
+type Mode = "signin" | "signup";
+
 export function AuthForm({ next }: { next: string }) {
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const action = mode === "signin" ? loginAction : signUpAction;
-  const [state, formAction, pending] = useActionState<AuthState, FormData>(action, null);
+  const [mode, setMode] = useState<Mode>("signin");
 
   return (
     <div>
@@ -35,55 +34,8 @@ export function AuthForm({ next }: { next: string }) {
         </button>
       </div>
 
-      <form action={formAction} className="space-y-4" key={mode}>
-        <input type="hidden" name="next" value={next} />
-
-        <Field label="Work email" htmlFor="email" required>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            placeholder="you@company.com"
-            required
-          />
-        </Field>
-
-        <Field label="Password" htmlFor="password" required>
-          <Input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete={mode === "signin" ? "current-password" : "new-password"}
-            placeholder={mode === "signup" ? "At least 8 characters" : "••••••••"}
-            required
-          />
-        </Field>
-
-        {mode === "signup" ? (
-          <Field label="Confirm password" htmlFor="confirm" required>
-            <Input id="confirm" name="confirm" type="password" autoComplete="new-password" required />
-          </Field>
-        ) : null}
-
-        {state?.error ? (
-          <div className="flex items-start gap-2 rounded-lg bg-rose-50 px-3 py-2.5 text-sm text-rose-700">
-            <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>{state.error}</span>
-          </div>
-        ) : null}
-
-        {state?.message ? (
-          <div className="flex items-start gap-2 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm text-emerald-700">
-            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
-            <span>{state.message}</span>
-          </div>
-        ) : null}
-
-        <Button type="submit" size="lg" className="w-full" loading={pending}>
-          {mode === "signin" ? "Sign in to workspace" : "Create account"}
-        </Button>
-      </form>
+      {/* Remount per mode so useActionState binds the matching server action. */}
+      <AuthFields key={mode} mode={mode} next={next} />
 
       <p className="mt-5 text-xs leading-relaxed text-slate-400">
         {mode === "signin"
@@ -91,5 +43,64 @@ export function AuthForm({ next }: { next: string }) {
           : "After signing up you can load a full demo dataset (10 clients, 25 campaigns, 500 leads) with one click."}
       </p>
     </div>
+  );
+}
+
+function AuthFields({ mode, next }: { mode: Mode; next: string }) {
+  const [state, formAction, pending] = useActionState<AuthState, FormData>(
+    mode === "signin" ? loginAction : signUpAction,
+    null,
+  );
+
+  return (
+    <form action={formAction} className="space-y-4">
+      <input type="hidden" name="next" value={next} />
+
+      <Field label="Work email" htmlFor="email" required>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          placeholder="you@company.com"
+          required
+        />
+      </Field>
+
+      <Field label="Password" htmlFor="password" required>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete={mode === "signin" ? "current-password" : "new-password"}
+          placeholder={mode === "signup" ? "At least 8 characters" : "••••••••"}
+          required
+        />
+      </Field>
+
+      {mode === "signup" ? (
+        <Field label="Confirm password" htmlFor="confirm" required>
+          <Input id="confirm" name="confirm" type="password" autoComplete="new-password" required />
+        </Field>
+      ) : null}
+
+      {state?.error ? (
+        <div className="flex items-start gap-2 rounded-lg bg-rose-50 px-3 py-2.5 text-sm text-rose-700">
+          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>{state.error}</span>
+        </div>
+      ) : null}
+
+      {state?.message ? (
+        <div className="flex items-start gap-2 rounded-lg bg-emerald-50 px-3 py-2.5 text-sm text-emerald-700">
+          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>{state.message}</span>
+        </div>
+      ) : null}
+
+      <Button type="submit" size="lg" className="w-full" loading={pending}>
+        {mode === "signin" ? "Sign in to workspace" : "Create account"}
+      </Button>
+    </form>
   );
 }
