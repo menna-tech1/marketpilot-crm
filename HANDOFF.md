@@ -1,5 +1,24 @@
 # Handoff — CRM & Platform (3-day track)
 
+## Live environment (already deployed)
+
+| | |
+| --- | --- |
+| App | https://marketpilot-blue.vercel.app |
+| Repo | https://github.com/menna-tech1/marketpilot-crm (private, `main`) |
+| Vercel project | `marketpilot` |
+| Supabase project | `daugbsfwfylxrponkzpw` (eu-central-1) |
+| Migrations | applied — 6 tables, RLS on all, 18 policies, private `documents` bucket |
+| Demo account | `demo@marketpilot.app` (password shared out of band) |
+| Seeded data | 10 clients · 25 campaigns · 500 leads · 3,000 metric rows |
+
+Migrations are already applied to the live project. To re-run them against another
+project, use the session pooler (`aws-0-<region>.pooler.supabase.com`, user
+`postgres.<ref>`) — the direct `db.<ref>.supabase.co` host is IPv6-only.
+
+Still to wire: `N8N_INGESTION_WEBHOOK_URL`, `ORCHESTRATOR_WEBHOOK_URL` and
+`N8N_WEBHOOK_SECRET` (needs the AI/RAG leads).
+
 Everything in this repo is built and verified except the steps that need your Supabase,
 n8n and Vercel accounts. Follow the sequence below; it takes about 45 minutes.
 
