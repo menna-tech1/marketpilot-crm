@@ -20,7 +20,7 @@ n8n and Vercel accounts. Follow the sequence below; it takes about 45 minutes.
 3. **.env.local** → copy `.env.example`, paste URL + anon key.
 4. `npm run dev` → create an account → **Load demo data** on the dashboard.
 5. **Verify isolation**: create a second account in a private window — it must see 0 clients.
-6. **GitHub**: push this repo, then import it in **Vercel**.
+6. **GitHub** → already pushed to `menna-tech1/marketpilot-crm`. Import it in **Vercel**.
 7. **Vercel env vars** (Production + Preview):
    `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
    `SUPABASE_SERVICE_ROLE_KEY`, `N8N_INGESTION_WEBHOOK_URL`,
